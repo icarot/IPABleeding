@@ -26,7 +26,7 @@ def scriptBanner():
 def setParam():
     # Define the parameters of the script.
     parser = argparse.ArgumentParser()
-    parser.add_argument("--app", help="Inform the app to make bleed")
+    parser.add_argument("--app", help="Inform the app to make bleed. E.g. python3 IPABleeding.py --app MyApp")
     global args
     args = parser.parse_args()
 
