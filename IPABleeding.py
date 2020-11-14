@@ -67,12 +67,7 @@ def saveFile(data,filename):
 
 def runCommand(command):
     returnCommand = subprocess.run(command, shell=True, capture_output=True, text=True)
-    if returnCommand.stderr:
-        print("[ERROR] Error to run the command: " + command)
-        print("[ERROR] Please verify if the Frida Server is up.")
-        exit()
-    else:
-        return returnCommand
+    return returnCommand
 
 def lisApps():
     print("Getting all Apps installed in the iOS device...");
