@@ -1,6 +1,7 @@
 import os
 import argparse
 import subprocess
+import re
 
 # Variables
 objection="<OBJECTION_DIR_PATH>"
@@ -21,7 +22,7 @@ def scriptBanner():
 :!:  :!:       :!:  !:!     :!:  !:!   :!:      :!:       :!:       :!:  !:!  :!:  :!:  !:!  :!:   !::  
  ::   ::       ::   :::      :: ::::   :: ::::   :: ::::   :: ::::   :::: ::   ::   ::   ::   ::: ::::  
 :     :         :   : :     :: : ::   : :: : :  : :: ::   : :: ::   :: :  :   :    ::    :    :: :: :   
-""" + "\ndeveloped by icarot\nVersion: 0.0.2\n")
+""" + "\ndeveloped by icarot\nVersion: 0.0.3\n")
 
 def setParam():
     # Define the parameters of the script.
@@ -100,6 +101,25 @@ def getAppMethodClasses():
     if os.path.isfile(fileMethod):
         print("File created: " + fileMethod + "\n###")
 
+def getSmartlyAppMethodClasses():
+    print("Getting all methods from the important classes...");
+    fileClasses = "list_classes.txt"
+    fileMethod = "list_methods_per_class_smart_mode.txt"
+    regex=(r"(Certificate|Pinner|Jailbreak|Simulator)")
+    if os.path.isfile(fileClasses):
+        fClass = open(fileClasses, "r")
+        fMethod = open(fileMethod, "w")
+        for lineClass in fClass:
+            matchPattern = re.search(regex, lineClass)
+            if matchPattern:
+                fMethod.write(lineClass)
+                command = objection + ' --gadget ' + args.app + ' run "ios hooking list class_methods ' + lineClass +'"'
+                returnCommand = runCommand(command)
+                fMethod.write(returnCommand.stdout + "\n###\n")
+    print("Creating a file...");
+    if os.path.isfile(fileMethod):
+        print("File created: " + fileMethod + "\n###")
+
 def getNSUserDefaults():
     print("Getting NSUserDefaults...");
     command = objection + ' --gadget ' + args.app + ' run "ios nsuserdefaults get"'
@@ -169,6 +189,7 @@ def menuFlow():
             getCookies()
             getKeychainDump()
             getAppClasses()
+            getSmartlyAppMethodClasses()
     else:
         paramAppPassed()
 
